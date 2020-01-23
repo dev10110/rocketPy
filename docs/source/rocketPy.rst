@@ -12,10 +12,26 @@ rocketPy.cli module
    :undoc-members:
    :show-inheritance:
 
+rocketPy.components module
+--------------------------
+
+.. automodule:: rocketPy.components
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 rocketPy.materials module
 -------------------------
 
 .. automodule:: rocketPy.materials
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+rocketPy.rocket module
+----------------------
+
+.. automodule:: rocketPy.rocket
    :members:
    :undoc-members:
    :show-inheritance:

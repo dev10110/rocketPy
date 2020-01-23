@@ -1,3 +1,5 @@
+"""Utility functions for rocketPy"""
+
 from . import ureg, Q_
 import numpy as np
 
@@ -27,6 +29,7 @@ def si(v):
         except:
             raise RuntimeError('Conversion to SI has failed')
 
+
 def mach_correction(Ma=0.0, method='default'):
     """Performs the Prandtl-Glauert compressibility correction, extended for supersonic region.
 
@@ -47,14 +50,14 @@ def mach_correction(Ma=0.0, method='default'):
 
     """
 
-    if method=='default':
-        #my own correction:
+    if method == 'default':
+        # my own correction:
         beta = max(np.sqrt(abs(1-Ma**2)), np.sqrt(1-0.8**2))
 
         return 1/beta
 
-    if method=='Cambridge':
-    #Follows the formulation of eqn. 55-57 of Box:
+    if method == 'Cambridge':
+        # Follows the formulation of eqn. 55-57 of Box:
         if Ma < 0.8:
             return 1/np.sqrt(1-Ma**2)
         elif Ma > 1.1:

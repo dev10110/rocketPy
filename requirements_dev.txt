@@ -13,3 +13,5 @@ pytest-runner==5.2
 pint==0.10.1
 numpy==1.18.1
 sphinx_rtd_theme==0.4.3
+matplotlib==3.1.2
+PrettyTable==0.7.2

@@ -1,4 +1,9 @@
+"""Defines all the materials and their material properties.
+Base class Material allows for users to define a material, while some specific commonly used materials are predefined to help speed up the design process.
+Users should check that the right material properties are assumed for their parts."""
+
 from . import ureg, Q_
+
 
 class Material():
     """Base class for defining material properties
@@ -13,7 +18,7 @@ class Material():
 
     Attributes:
         density (Pint.Quantity): Material Density.
-        name
+        name (str): name
 
     """
 
