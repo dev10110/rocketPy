@@ -9,10 +9,9 @@ rocketPy
 .. image:: https://img.shields.io/travis/dev10110/rocketPy.svg
         :target: https://travis-ci.org/dev10110/rocketPy
 
-.. image:: https://readthedocs.org/projects/rocketPy/badge/?version=latest
-        :target: https://rocketPy.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/rocketpy/badge/?version=latest
+        :target: https://rocketpy.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
-
 
 
 
