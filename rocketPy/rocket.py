@@ -181,11 +181,22 @@ class Rocket():
         m = sum(comp.mass for comp in self.components)
 
         return m
-    def xcg(self):
+
+    def xcg(self, mass=None):
+
+        # TODO (high): update to accomodate changing mass of rocket.
 
         xcg = sum(comp.mass * (comp.x_ref + comp.xcg()) for comp in self.components) / self.mass()
 
         return xcg
+
+    def inertia_matrix(self, mass=None):
+
+        # TODO (high): change this to return the inertia at the given mass total
+
+        I_xx, I_yy, I_zz = si(self.inertia())
+
+        return np.diagflat([I_xx, I_yy, I_zz])
 
     def inertia(self):
 
@@ -413,6 +424,13 @@ class Rocket():
             x1.add_row(["X_CP", f'{self.xcp():.4f~}', "At default values"])
         except:
             x1.add_row(["X_CP", 'ERROR', "At default values"])
+
+        try:
+            diameter = 2*(self.A_ref/np.pi)**0.5
+            x1.add_row(["Static Margin (calibers)", f'{(self.xcp()-self.xcg())/self.diameter:.4f~}',"At default values"])
+        except:
+            x1.add_row(["Static Margin (calibers)", 'ERROR', "At default values"])
+
 
         try:
             x1.add_row(["CD", f'{self.CD():.4f~}',"At default values"])

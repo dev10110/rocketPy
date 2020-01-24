@@ -2,7 +2,7 @@
 
 from . import ureg, Q_
 import numpy as np
-
+import numpy.linalg as la
 
 def si(v):
     """Utility function to convert a Pint Quantity into a float in SI units.
@@ -21,6 +21,10 @@ def si(v):
         >> si(6.0*ureg.inch)
         0.1524
     """
+
+    if isinstance(v, Quaternion):
+        return v.q
+
     try:
         return v.to_base_units().magnitude
     except:
@@ -64,3 +68,60 @@ def mach_correction(Ma=0.0, method='default'):
             return 1/np.sqrt(Ma**2-1)
         else:
             return 1/np.sqrt(1-0.8**2)
+
+def unit_vector(v):
+    """Return a unit vector in the direction of v."""
+    return v/la.norm(v)
+
+
+def angle_between(va, vb):
+
+    """ Return the angle between two column vectors using the dot product"""
+
+    th = np.arccos(np.dot(unit_vector(va.T), unit_vector(vb)))
+
+    return float(th)
+
+    
+
+class Quaternion():
+
+    """Note, does not support Pint units """
+
+    def __init__(self, s, vx, vy, vz):
+        """ Creates a quaternion. Expects floats"""
+        self.q = np.array([[s, vx, vy, vz]]).T
+
+    @classmethod
+    def from_angle(cls, theta, axis):
+        """A rotation of angle `theta` about the axis `ax, ay, az`. Allows the axis to be not normalized"""
+
+        axis = unit_vector(axis)
+
+        s = np.cos(theta/2)
+        v = np.sin(theta/2)*axis
+
+        return cls(s, *v)
+
+
+    def rot_matrix(self, qq=None):
+
+        if qq is None:
+            qq = self.q
+
+
+        qq  = qq[:,0]
+
+        R = np.array([[  1 - 2*qq[2]**2 - 2*qq[3]**2,  2*qq[1]*qq[2] - 2*qq[0]*qq[3],    2*qq[1]*qq[3] + 2*qq[0]*qq[2]],
+                      [2*qq[1]*qq[2] + 2*qq[0]*qq[3],    1 - 2*qq[1]**2 - 2*qq[3]**2,    2*qq[2]*qq[3] - 2*qq[0]*qq[1]],
+                      [2*qq[1]*qq[3] - 2*qq[0]*qq[2],  2*qq[2]*qq[3] + 2*qq[0]*qq[1],     1 - 2*qq[1]**2 - 2*qq[2]**2]])
+
+        return R
+
+
+    def __repr__(self):
+        return str(self.q)
+
+    def quat_to_rot(self, qq):
+
+        """Convert a (np.array) quaternion to a rotation matrix"""
