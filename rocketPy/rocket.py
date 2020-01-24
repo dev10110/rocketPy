@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
 
 from . import ureg, Q_
+from .components import BodyTube
+from .util import mach_correction, si
 
 class Rocket():
 

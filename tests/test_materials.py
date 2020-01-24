@@ -8,6 +8,7 @@ import rocketPy as rp
 from rocketPy import ureg
 
 import numpy.testing as npt
+from prettytable import PrettyTable
 
 
 def test_materials():
