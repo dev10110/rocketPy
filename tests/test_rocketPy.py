@@ -6,7 +6,6 @@ import pytest
 
 from click.testing import CliRunner
 
-from rocketPy import rocketPy
 from rocketPy import cli
 
 import rocketPy as rp

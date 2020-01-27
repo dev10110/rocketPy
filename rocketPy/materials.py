@@ -2,7 +2,7 @@
 Base class Material allows for users to define a material, while some specific commonly used materials are predefined to help speed up the design process.
 Users should check that the right material properties are assumed for their parts."""
 
-from . import ureg, Q_
+from . import Q_, ureg
 
 
 class Material():
@@ -26,8 +26,7 @@ class Material():
 
         self.name = name
 
-        self.density = 0*ureg.km/(ureg.m**3)
-
+        self.density = 0 * ureg.km / (ureg.m**3)
 
     def __repr__(self):
 
@@ -36,6 +35,7 @@ class Material():
     def describe(self):
         for d in self.__dict__:
             print(f'{d:20s}: {str(self.__dict__[d]):20s}')
+
 
 class Aluminium(Material):
     """Defines a basic aluminium.
@@ -60,10 +60,10 @@ class Aluminium(Material):
 
         super().__init__(name=name)
 
-        self.density = 2.7*ureg.g/(ureg.cm**3)
-        self.tensile_modulus = 69*ureg.GPa
-        self.tensile_strength = 270*ureg.MPa
-        self.max_temp = 420*ureg.degK
+        self.density = 2.7 * ureg.g / (ureg.cm**3)
+        self.tensile_modulus = 69 * ureg.GPa
+        self.tensile_strength = 270 * ureg.MPa
+        self.max_temp = 420 * ureg.degK
 
 
 class PLA(Material):
@@ -72,7 +72,7 @@ class PLA(Material):
 
         super().__init__(name=name)
 
-        self.density = 1.05*ureg.g/(ureg.cm**3)
+        self.density = 1.05 * ureg.g / (ureg.cm**3)
 
 
 class Phenolic(Material):
@@ -81,7 +81,8 @@ class Phenolic(Material):
 
         super().__init__(name=name)
 
-        self.density = 0.95*ureg.g/(ureg.cm**3)
+        self.density = 0.95 * ureg.g / (ureg.cm**3)
+
 
 class Acrylic(Material):
 
@@ -89,7 +90,8 @@ class Acrylic(Material):
 
         super().__init__(name=name)
 
-        self.density = 1.19*ureg.g/(ureg.cm**3)
+        self.density = 1.19 * ureg.g / (ureg.cm**3)
+
 
 class Plywood(Material):
 
@@ -97,7 +99,8 @@ class Plywood(Material):
 
         super().__init__(name=name)
 
-        self.density = 0.63*ureg.g/(ureg.cm**3)
+        self.density = 0.63 * ureg.g / (ureg.cm**3)
+
 
 class Polycarbonate(Material):
 
@@ -105,4 +108,4 @@ class Polycarbonate(Material):
 
         super().__init__(name=name)
 
-        self.density = 1.2*ureg.g/(ureg.cm**3)
+        self.density = 1.2 * ureg.g / (ureg.cm**3)

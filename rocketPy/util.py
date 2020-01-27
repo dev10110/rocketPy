@@ -1,8 +1,9 @@
 """Utility functions for rocketPy"""
 
-from . import ureg, Q_
+from . import Q_, ureg
 import numpy as np
 import numpy.linalg as la
+
 
 def si(v):
     """Utility function to convert a Pint Quantity into a float in SI units.
@@ -27,10 +28,10 @@ def si(v):
 
     try:
         return v.to_base_units().magnitude
-    except:
+    except BaseException:
         try:
             return [si(vv) for vv in v]
-        except:
+        except BaseException:
             raise RuntimeError('Conversion to SI has failed')
 
 
@@ -56,33 +57,32 @@ def mach_correction(Ma=0.0, method='default'):
 
     if method == 'default':
         # my own correction:
-        beta = max(np.sqrt(abs(1-Ma**2)), np.sqrt(1-0.8**2))
+        beta = max(np.sqrt(abs(1 - Ma**2)), np.sqrt(1 - 0.8**2))
 
-        return 1/beta
+        return 1 / beta
 
     if method == 'Cambridge':
         # Follows the formulation of eqn. 55-57 of Box:
         if Ma < 0.8:
-            return 1/np.sqrt(1-Ma**2)
+            return 1 / np.sqrt(1 - Ma**2)
         elif Ma > 1.1:
-            return 1/np.sqrt(Ma**2-1)
+            return 1 / np.sqrt(Ma**2 - 1)
         else:
-            return 1/np.sqrt(1-0.8**2)
+            return 1 / np.sqrt(1 - 0.8**2)
+
 
 def unit_vector(v):
     """Return a unit vector in the direction of v."""
-    return v/la.norm(v)
+    return v / la.norm(v)
 
 
 def angle_between(va, vb):
-
     """ Return the angle between two column vectors using the dot product"""
 
     th = np.arccos(np.dot(unit_vector(va.T), unit_vector(vb)))
 
     return float(th)
 
-    
 
 class Quaternion():
 
@@ -98,30 +98,66 @@ class Quaternion():
 
         axis = unit_vector(axis)
 
-        s = np.cos(theta/2)
-        v = np.sin(theta/2)*axis
+        s = np.cos(theta / 2)
+        v = np.sin(theta / 2) * axis
 
         return cls(s, *v)
-
 
     def rot_matrix(self, qq=None):
 
         if qq is None:
             qq = self.q
 
+        qq = qq[:, 0]
 
-        qq  = qq[:,0]
-
-        R = np.array([[  1 - 2*qq[2]**2 - 2*qq[3]**2,  2*qq[1]*qq[2] - 2*qq[0]*qq[3],    2*qq[1]*qq[3] + 2*qq[0]*qq[2]],
-                      [2*qq[1]*qq[2] + 2*qq[0]*qq[3],    1 - 2*qq[1]**2 - 2*qq[3]**2,    2*qq[2]*qq[3] - 2*qq[0]*qq[1]],
-                      [2*qq[1]*qq[3] - 2*qq[0]*qq[2],  2*qq[2]*qq[3] + 2*qq[0]*qq[1],     1 - 2*qq[1]**2 - 2*qq[2]**2]])
+        R = np.array([[1 -
+                       2 *
+                       qq[2]**2 -
+                       2 *
+                       qq[3]**2, 2 *
+                       qq[1] *
+                       qq[2] -
+                       2 *
+                       qq[0] *
+                       qq[3], 2 *
+                       qq[1] *
+                       qq[3] +
+                       2 *
+                       qq[0] *
+                       qq[2]], [2 *
+                                qq[1] *
+                                qq[2] +
+                                2 *
+                                qq[0] *
+                                qq[3], 1 -
+                                2 *
+                                qq[1]**2 -
+                                2 *
+                                qq[3]**2, 2 *
+                                qq[2] *
+                                qq[3] -
+                                2 *
+                                qq[0] *
+                                qq[1]], [2 *
+                                         qq[1] *
+                                         qq[3] -
+                                         2 *
+                                         qq[0] *
+                                         qq[2], 2 *
+                                         qq[2] *
+                                         qq[3] +
+                                         2 *
+                                         qq[0] *
+                                         qq[1], 1 -
+                                         2 *
+                                         qq[1]**2 -
+                                         2 *
+                                         qq[2]**2]])
 
         return R
-
 
     def __repr__(self):
         return str(self.q)
 
     def quat_to_rot(self, qq):
-
         """Convert a (np.array) quaternion to a rotation matrix"""
