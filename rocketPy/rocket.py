@@ -2,12 +2,13 @@
 
 from collections.abc import Iterable
 import numpy as np
+from numpy import linalg as la
 from prettytable import PrettyTable
 import matplotlib.pyplot as plt
 
 from . import Q_, ureg
 from .components import BodyTube
-from .util import mach_correction, si
+from .util import mach_correction, si, unit_vector, angle_between
 
 
 class Rocket():
@@ -84,6 +85,7 @@ class Rocket():
 
         # define the A_ref here.
         self.A_ref = nc.A_ref
+        self.diameter = 2 * np.sqrt(self.A_ref/np.pi)
 
         return None
 
@@ -179,27 +181,26 @@ class Rocket():
     def length(self):
         return sum(comp.length for comp in self.components)
 
+
     def CNa(self, alpha=0 * ureg.rad, Re=1e6, Mach=0.3):
 
         CNa = sum(comp.CNa(alpha, Re, Mach) for comp in self.components)
 
         return CNa
 
+    @ureg.wraps(None, (None, ureg.rad, None, None), strict=False)
     def CN(self, alpha=0 * ureg.rad, Re=1e6, Mach=0.3):
 
         return self.CNa(alpha, Re, Mach) * alpha
 
+
+    @ureg.wraps(None, (None, ureg.rad, None, None), strict=False)
     def xcp(self, alpha=0 * ureg.rad, Re=1e6, Mach=0.3):
 
-        xcp = sum(comp.CNa(alpha,
-                           Re,
-                           Mach) * (comp.A_ref / self.A_ref) * (comp.x_ref + comp.xcp(alpha,
-                                                                                      Re,
-                                                                                      Mach)) for comp in self.components) / self.CNa(alpha,
-                                                                                                                                     Re,
-                                                                                                                                     Mach)
+        xcp = sum(comp.CNa(alpha, Re, Mach) * (comp.A_ref / self.A_ref) * (comp.x_ref + comp.xcp(alpha,Re,Mach)) for comp in self.components) / self.CNa(alpha, Re, Mach)
 
         return xcp
+
 
     def mass(self):
 
@@ -207,27 +208,42 @@ class Rocket():
 
         return m
 
+    @ureg.wraps(None, (None, ureg.kg), strict=False)
     def xcg(self, mass=None):
 
         # TODO (high): update to accomodate changing mass of rocket.
 
-        xcg = sum(comp.mass * (comp.x_ref + comp.xcg())
-                  for comp in self.components) / self.mass()
+        xcg = sum(comp.mass * (comp.x_ref + comp.xcg()) for comp in self.components) / self.mass()
 
         return xcg
 
-    def inertia_matrix(self, mass=None):
+    @ureg.wraps(None, (None, ureg.kg, None), strict=False)
+    def inertia_matrix(self, mass=None, with_inverse=False):
 
         # TODO (high): change this to return the inertia at the given mass
         # total
 
-        I_xx, I_yy, I_zz = si(self.inertia())
+        if mass is None and self.inertia_matrix_0 is not None:
+            if with_inverse:
+                return self.inertia_matrix_0, self.inv_inertia_matrix_0
+            else:
+                return self.inertia_matrix_0
 
-        return np.diagflat([I_xx, I_yy, I_zz])
+        I_xx = si(self.inertia_xx())
+        I_yy = si(self.inertia_yy())
+        I_zz = si(self.inertia_zz())
 
-    def inertia(self):
+        II = np.diagflat([I_xx, I_yy, I_zz])
+        inv_II = la.inv(II)
 
-        return self.inertia_xx(), self.inertia_yy(), self.inertia_zz()
+        if mass is None:
+            self.inertia_matrix_0 = II
+            self.inv_inertia_matrix_0 = inv_II
+
+        if with_inverse:
+            return II, inv_II
+        else:
+            return II
 
     def inertia_xx(self):
 
@@ -241,9 +257,9 @@ class Rocket():
 
     def inertia_zz(self):
 
-        return sum(comp.I_zz + comp.mass * (comp.z_ref + comp.zcg())
-                   ** 2 for comp in self.components)
+        return sum(comp.I_zz + comp.mass * (comp.z_ref + comp.zcg()) ** 2 for comp in self.components)
 
+    @ureg.wraps(None, (None, ureg.rad, None, None), strict=False)
     def CD(self, alpha=0 * ureg.rad, Re=1e6, Mach=0.3):
         """Calculate the drag force at some angle of attack, including compressibility"""
 
@@ -261,6 +277,8 @@ class Rocket():
 
         return CD
 
+
+    @ureg.wraps(None, (None, ureg.rad, None, None), strict=False)
     def CA(self, alpha=0 * ureg.rad, Re=1e6, Mach=0.3):
         """Compute the axial drag force from the normal force and the axial force"""
 
@@ -274,6 +292,8 @@ class Rocket():
 
         return CA
 
+
+    @ureg.wraps(None, (None, ureg.rad), strict=False)
     def CD_body_alpha(self, alpha=0 * ureg.rad):
 
         def delta(alpha):
@@ -289,7 +309,9 @@ class Rocket():
 
         l_TR = self.length()
         l_n = self.nose_cone.length
-        alpha = alpha.m_as(ureg.rad)  # ensure its in radians
+
+        if type(alpha) is 1*ureg.rad:
+            assert alpha.units == ureg.rad, "Please ensure alpha is in radians"  # ensure its in radians
 
         # maximum body diameter of rocket
         d_b = max(
@@ -300,9 +322,13 @@ class Rocket():
 
         return CD_body_alpha
 
+    @ureg.wraps(None, (None, ureg.rad), strict=False)
     def CD_fin_alpha(self, alpha):
 
-        alpha = alpha.to(ureg.rad).magnitude  # ensure its in radians
+        if type(alpha) is 1*ureg.rad:
+            print(f'ALPHA INPUT: {alpha}')
+
+            assert alpha.units == ureg.rad, "Please ensure alpha is in radians"  # ensure its in radians
 
         A_fp = self.fins.planform_area
         A_fe = self.fins.exposed_area
@@ -430,6 +456,15 @@ class Rocket():
 
             return Cf
 
+    @ureg.wraps(None, (None, ureg.rad, None, None, None))
+    def static_margin(self, alpha=0 * ureg.rad, Re=1e6, Mach=0.3, mass=None):
+
+        xcp = self.xcp(alpha, Re, Mach)
+        xcg = self.xcg(mass)
+
+        return ((xcp-xcg)/self.diameter).to_base_units()
+
+
     def describe(self, describe_components=False):
 
         print(f'Rocket: {self.name}')
@@ -464,7 +499,7 @@ class Rocket():
         try:
             2 * (self.A_ref / np.pi)**0.5
             x1.add_row(["Static Margin (calibers)",
-                        f'{(self.xcp()-self.xcg())/self.diameter:.4f~}',
+                        f'{self.static_margin():.4f~}',
                         "At default values"])
         except BaseException:
             x1.add_row(["Static Margin (calibers)",

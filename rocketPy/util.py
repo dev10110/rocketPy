@@ -32,7 +32,7 @@ def si(v):
         try:
             return [si(vv) for vv in v]
         except BaseException:
-            raise RuntimeError('Conversion to SI has failed')
+            raise RuntimeError('Conversion to SI has failed') 
 
 
 def mach_correction(Ma=0.0, method='default'):
@@ -79,7 +79,7 @@ def unit_vector(v):
 def angle_between(va, vb):
     """ Return the angle between two column vectors using the dot product"""
 
-    th = np.arccos(np.dot(unit_vector(va.T), unit_vector(vb)))
+    th = np.arccos(unit_vector(va) @ unit_vector(vb))
 
     return float(th)
 
@@ -90,7 +90,7 @@ class Quaternion():
 
     def __init__(self, s, vx, vy, vz):
         """ Creates a quaternion. Expects floats"""
-        self.q = np.array([[s, vx, vy, vz]]).T
+        self.q = np.array([s, vx, vy, vz])
 
     @classmethod
     def from_angle(cls, theta, axis):
@@ -107,8 +107,6 @@ class Quaternion():
 
         if qq is None:
             qq = self.q
-
-        qq = qq[:, 0]
 
         R = np.array([[1 -
                        2 *

@@ -1,0 +1,113 @@
+2020-01-23 21:03:59.283 python[61418:17799736] [QL] Can't get plugin bundle info at file:///Users/Devansh/Library/Application%20Support/Autodesk/webdeploy/production/078c0152f608cb87272eeb7be2226a5f77176092/Autodesk%20Fusion%20360.app/Contents/Library/QuickLook/NQLGenerator.qlgenerator
+objc[61418]: Class FIFinderSyncExtensionHost is implemented in both /System/Library/PrivateFrameworks/FinderKit.framework/Versions/A/FinderKit (0x7fffad21b3d8) and /System/Library/PrivateFrameworks/FileProvider.framework/OverrideBundles/FinderSyncCollaborationFileProviderOverride.bundle/Contents/MacOS/FinderSyncCollaborationFileProviderOverride (0x119d1ff50). One of the two will be used. Which one is undefined.
+Rocket: Simple Rocket
+
+Rocket Details
++--------------+--------------+-------------------+
+|  Parameter   |    Value     |       Notes       |
++--------------+--------------+-------------------+
+|  Total Mass  |  1.9803 kg   |                   |
+| Total Length |  70.0000 in  |                   |
+|     X_CG     |  1.152304 m  |                   |
+|     X_CP     |   1.1799 m   | At default values |
+|      CD      |    ERROR     | At default values |
+|     CNa      | 9.0907 / rad | At default values |
++--------------+--------------+-------------------+
+
+Component Details
++-----------+------------+------------+---------+-----------------+--------------+
+| Component |    Type    |  Material  |   Mass  | Mass Fraction % |     CNa      |
++-----------+------------+------------+---------+-----------------+--------------+
+| Nose Cone |  NoseCone  |    PLA     | 0.23 kg |      11.61      | 2.097 / rad  |
+| Body Tube |  BodyTube  |  Phenolic  | 1.11 kg |      56.00      | 0.000 / rad  |
+| Boat Tail | Transition |  Phenolic  | 0.08 kg |       3.89      | -1.165 / rad |
+|    Fins   |   FinSet   | Al-6061-T6 | 0.56 kg |      28.50      | 8.159 / rad  |
++-----------+------------+------------+---------+-----------------+--------------+
+
+Describing all components in full:
+
+Nose Cone (type: NoseCone)
++----------------+-------------------+--------------------+
+|   Parameter    |     Value (SI)    |       Value        |
++----------------+-------------------+--------------------+
+|     shape      |      Conical      |                    |
+|     x_ref      |      0.000 m      |      0.000 m       |
+|    diameter    |      0.152 m      |      6.000 in      |
+|     length     |      0.457 m      |     18.000 in      |
+| wall_thickness |      0.002 m      |      2.000 mm      |
+|    material    |  PLA: (Material)) |                    |
+|      name      |     Nose Cone     |                    |
+|      mass      |      0.230 kg     |      0.230 kg      |
+|      I_xx      | 0.001 kg * m ** 2 | 1.034 in ** 2 * kg |
+|      I_yy      | 0.003 kg * m ** 2 | 4.137 in ** 2 * kg |
+|      I_zz      | 0.003 kg * m ** 2 | 4.137 in ** 2 * kg |
+|     y_ref      |      0.000 m      |      0.000 m       |
+|     z_ref      |      0.000 m      |      0.000 m       |
+|     A_ref      |    0.018 m ** 2   |   28.274 in ** 2   |
++----------------+-------------------+--------------------+
+Body Tube (type: BodyTube)
++----------------+-----------------------+----------------------+
+|   Parameter    |       Value (SI)      |        Value         |
++----------------+-----------------------+----------------------+
+|     A_ref      |      0.018 m ** 2     |    28.274 in ** 2    |
+|     d_ref      |        0.152 m        |       6.000 in       |
+|    diameter    |        0.152 m        |       6.000 in       |
+|     length     |        1.219 m        |      48.000 in       |
+| wall_thickness |        0.002 m        |       2.000 mm       |
+|    material    | Phenolic: (Material)) |                      |
+|      name      |       Body Tube       |                      |
+|      mass      |        1.109 kg       |       1.109 kg       |
+|      I_xx      |   0.006 kg * m ** 2   |  9.982 in ** 2 * kg  |
+|      I_yy      |   0.137 kg * m ** 2   | 212.944 in ** 2 * kg |
+|      I_zz      |   0.137 kg * m ** 2   | 212.944 in ** 2 * kg |
+|     x_ref      |        0.457 m        |       0.457 m        |
+|     y_ref      |        0.000 m        |       0.000 m        |
+|     z_ref      |        0.000 m        |       0.000 m        |
++----------------+-----------------------+----------------------+
+Boat Tail (type: Transition)
++----------------+-----------------------+--------------------+
+|   Parameter    |       Value (SI)      |       Value        |
++----------------+-----------------------+--------------------+
+|     A_ref      |      0.018 m ** 2     |   28.274 in ** 2   |
+|    fore_dia    |        0.152 m        |      6.000 in      |
+|    aft_dia     |        0.102 m        |      4.000 in      |
+|     d_ref      |        0.152 m        |      6.000 in      |
+|     length     |        0.102 m        |      4.000 in      |
+| wall_thickness |        0.002 m        |      2.000 mm      |
+|    material    | Phenolic: (Material)) |                    |
+|      name      |       Boat Tail       |                    |
+|      mass      |        0.077 kg       |      0.077 kg      |
+|      I_xx      |   0.000 kg * m ** 2   | 0.501 in ** 2 * kg |
+|      I_yy      |   0.000 kg * m ** 2   | 0.101 in ** 2 * kg |
+|      I_zz      |   0.000 kg * m ** 2   | 0.101 in ** 2 * kg |
+|     x_ref      |        1.676 m        |      1.676 m       |
+|     y_ref      |        0.000 m        |      0.000 m       |
+|     z_ref      |        0.000 m        |      0.000 m       |
++----------------+-----------------------+--------------------+
+Fins (type: FinSet)
++----------------+-------------------------+---------------------+
+|   Parameter    |        Value (SI)       |        Value        |
++----------------+-------------------------+---------------------+
+|     A_ref      |       0.018 m ** 2      |    28.274 in ** 2   |
+|     d_ref      |         0.152 m         |       6.000 in      |
+|       n        |            3            |                     |
+|      span      |         0.152 m         |       6.000 in      |
+|   root_chord   |         0.305 m         |      12.000 in      |
+|   tip_chord    |         0.152 m         |       6.000 in      |
+|   mid_sweep    |        0.175 rad        |      10.000 deg     |
+| mid_chord_span |         0.155 m         |       6.093 in      |
+|    tube_dia    |         0.152 m         |       6.000 in      |
+|     length     |         0.000 m         |       0.000 m       |
+|   thickness    |         0.002 m         |       2.000 mm      |
+|  exposed_area  |       0.035 m ** 2      |    54.000 in ** 2   |
+| planform_area  |       0.058 m ** 2      |    90.000 in ** 2   |
+|    material    | Al-6061-T6: (Material)) |                     |
+|      name      |           Fins          |                     |
+|      mass      |         0.564 kg        |       0.564 kg      |
+|      I_xx      |    0.013 kg * m ** 2    | 19.754 in ** 2 * kg |
+|      I_yy      |    0.003 kg * m ** 2    |  4.284 in ** 2 * kg |
+|      I_zz      |    0.003 kg * m ** 2    |  4.284 in ** 2 * kg |
+|     x_ref      |         1.372 m         |       1.372 m       |
+|     y_ref      |         0.000 m         |       0.000 m       |
+|     z_ref      |         0.000 m         |       0.000 m       |
++----------------+-------------------------+---------------------+
