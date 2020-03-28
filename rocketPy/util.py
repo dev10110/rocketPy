@@ -32,7 +32,7 @@ def si(v):
         try:
             return [si(vv) for vv in v]
         except BaseException:
-            raise RuntimeError('Conversion to SI has failed') 
+            raise RuntimeError('Conversion to SI has failed')
 
 
 def mach_correction(Ma=0.0, method='default'):
@@ -154,8 +154,16 @@ class Quaternion():
 
         return R
 
+    def rate_of_change(self, omega):
+        """Return the rate of change of the quaternion based on an angular velocity"""
+        # follows the formulation in Box
+        s = self.q[0]
+        v = self.q[1:4]
+
+        sdot = 0.5 * omega @ v
+        vdot = 0.5 * (s * omega + np.cross(omega, v))
+
+        return np.hstack([[sdot], vdot])
+
     def __repr__(self):
         return str(self.q)
-
-    def quat_to_rot(self, qq):
-        """Convert a (np.array) quaternion to a rotation matrix"""
