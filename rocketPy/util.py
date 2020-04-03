@@ -89,8 +89,12 @@ class Quaternion():
     """Note, does not support Pint units """
 
     def __init__(self, s, vx, vy, vz):
-        """ Creates a quaternion. Expects floats"""
+        """ Creates a unit quaternion. Expects floats"""
+
+        # note may have issues for negative s
         self.q = np.array([s, vx, vy, vz])
+        self.q = self.q/la.norm(self.q) # normalize for good measure.
+
 
     @classmethod
     def from_angle(cls, theta, axis):
@@ -108,49 +112,15 @@ class Quaternion():
         if qq is None:
             qq = self.q
 
-        R = np.array([[1 -
-                       2 *
-                       qq[2]**2 -
-                       2 *
-                       qq[3]**2, 2 *
-                       qq[1] *
-                       qq[2] -
-                       2 *
-                       qq[0] *
-                       qq[3], 2 *
-                       qq[1] *
-                       qq[3] +
-                       2 *
-                       qq[0] *
-                       qq[2]], [2 *
-                                qq[1] *
-                                qq[2] +
-                                2 *
-                                qq[0] *
-                                qq[3], 1 -
-                                2 *
-                                qq[1]**2 -
-                                2 *
-                                qq[3]**2, 2 *
-                                qq[2] *
-                                qq[3] -
-                                2 *
-                                qq[0] *
-                                qq[1]], [2 *
-                                         qq[1] *
-                                         qq[3] -
-                                         2 *
-                                         qq[0] *
-                                         qq[2], 2 *
-                                         qq[2] *
-                                         qq[3] +
-                                         2 *
-                                         qq[0] *
-                                         qq[1], 1 -
-                                         2 *
-                                         qq[1]**2 -
-                                         2 *
-                                         qq[2]**2]])
+        R = np.array([[1 - 2 * qq[2]**2 - 2 * qq[3]**2,
+                       2 * qq[1] * qq[2] - 2 * qq[0] * qq[3],
+                       2 * qq[1] * qq[3] + 2 * qq[0] * qq[2]],
+                [2 * qq[1] * qq[2] + 2 * qq[0] * qq[3],
+                 1 - 2 * qq[1]**2 - 2 * qq[3]**2,
+                 2 * qq[2] * qq[3] - 2 * qq[0] * qq[1]],
+                [2 * qq[1] * qq[3] - 2 * qq[0] * qq[2],
+                 2 * qq[2] * qq[3] + 2 * qq[0] * qq[1],
+                 1 - 2 * qq[1]**2 - 2 * qq[2]**2]])
 
         return R
 
@@ -160,7 +130,7 @@ class Quaternion():
         s = self.q[0]
         v = self.q[1:4]
 
-        sdot = 0.5 * omega @ v
+        sdot = - 0.5 * omega @ v # mistake in Box eqn 7 (based on https://www.sciencedirect.com/topics/computer-science/quaternion-multiplication and http://web.cs.iastate.edu/~cs577/handouts/quaternion.pdf)
         vdot = 0.5 * (s * omega + np.cross(omega, v))
 
         return np.hstack([[sdot], vdot])
