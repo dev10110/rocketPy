@@ -9,7 +9,7 @@ To save the output of a example file to a text file:
 ``python examples/simple/simple.py  &> examples/simple/output.txt``
 
 
-
+ 
 
 cookiecutter:
 https://cookiecutter-pypackage.readthedocs.io/en/latest/tutorial.html
