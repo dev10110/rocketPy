@@ -52,6 +52,22 @@ rocketPy.util module
    :undoc-members:
    :show-inheritance:
 
+rocketPy.solution module
+--------------------
+
+   .. automodule:: rocketPy.solution
+      :members:
+      :undoc-members:
+      :show-inheritance:
+
+rocketPy.simulation module
+--------------------
+
+   .. automodule:: rocketPy.simulation
+      :members:
+      :undoc-members:
+      :show-inheritance:
+
 
 Module contents
 ---------------
