@@ -11,3 +11,8 @@ History
 ------------------
 
 * Updates, with the rocket components and an example defined.
+
+0.1.4 (2020-04-15)
+-------------------
+
+* Added the simulation class!
