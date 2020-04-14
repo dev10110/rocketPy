@@ -8,7 +8,9 @@ Welcome to rocketPy's documentation!
    readme
    installation
    usage
+   usage_simulation
    source/modules
+   source/
    contributing
    authors
    history
