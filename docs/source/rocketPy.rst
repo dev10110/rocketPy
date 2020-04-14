@@ -4,13 +4,7 @@ rocketPy package
 Submodules
 ----------
 
-rocketPy.cli module
--------------------
 
-.. automodule:: rocketPy.cli
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 rocketPy.components module
 --------------------------
@@ -36,13 +30,6 @@ rocketPy.rocket module
    :undoc-members:
    :show-inheritance:
 
-rocketPy.rocketPy module
-------------------------
-
-.. automodule:: rocketPy.rocketPy
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 rocketPy.util module
 --------------------
@@ -53,7 +40,7 @@ rocketPy.util module
    :show-inheritance:
 
 rocketPy.solution module
---------------------
+--------------------------
 
    .. automodule:: rocketPy.solution
       :members:
@@ -61,7 +48,7 @@ rocketPy.solution module
       :show-inheritance:
 
 rocketPy.simulation module
---------------------
+----------------------------
 
    .. automodule:: rocketPy.simulation
       :members:

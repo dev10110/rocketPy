@@ -8,9 +8,8 @@ Welcome to rocketPy's documentation!
    readme
    installation
    usage
-   usage_simulation
+   examples/staging_demonstrator-test
    source/modules
-   source/
    contributing
    authors
    history
