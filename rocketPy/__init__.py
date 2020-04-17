@@ -15,3 +15,4 @@ from .materials import *
 from .util import *
 from .components import *
 from .rocket import *
+from .quaternion import *
