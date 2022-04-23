@@ -10,7 +10,7 @@ twine==3.1.1
 Click==7.0
 pytest==5.3.5
 pytest-runner==5.2
-pint==0.10.1
+pint==0.19.2
 numpy==1.18.1
 sphinx_rtd_theme==0.4.3
 matplotlib==3.1.3
